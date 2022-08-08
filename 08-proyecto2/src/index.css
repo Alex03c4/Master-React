@@ -1,0 +1,231 @@
+body {
+  /**
+  background-color: rgb(94, 94, 96);*/
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-ssmoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.layaut {
+  width: 85%;
+  margin: 0 auto;
+}
+
+.header{
+  display: flex ;
+  justify-self: center;
+  align-items: center;
+  list-style: none;
+  height: 132px;
+  border-bottom: 3px solid;
+  margin-bottom: 35px;
+
+}
+.header .logo{
+  flex: 2;
+  display: flex;
+}
+
+.header .logo span{
+  display:block;
+  font-size: 90px;
+  font-weight: bolder;
+  margin-top:-8px;
+}
+
+.header .logo h3{
+  display: block;
+  flex-basis: 40px;
+  margin-left: 10px;
+  font-weight:300px;
+  text-transform: uppercase;
+}
+
+.header .nav{
+  flex-grow: 2;
+}
+
+.header nav ul{
+  height: 132px;
+  display: flex;
+  justify-self: flex-end;
+  align-items: center;
+  list-style: none;
+}
+
+.header li{
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 17px;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.header li a{
+  color:black;
+  text-decoration: none;
+  transition: all 300ms;
+}
+.header .active,
+.header a:hover{
+  color:#fa4529;
+}
+
+.content{
+  min-height: 400px;
+}
+
+.footer{
+  min-height: 40px;
+  line-height: 7px;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 35px;
+  padding-top: 45px;
+  border-top: 3px solid black;
+  background: #f5f5f5;
+  color: #444;
+}
+
+.home {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: 200;
+  font-size: 20px;
+}
+
+.home h1{
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-weight: 400;
+  font-size: 60px;
+  margin-bottom: 0;
+  margin-top: 80px;
+}
+
+.home strong {
+  color: #fa4529;
+}
+
+.home h2{
+  color: rgb(104, 103, 103);
+}
+
+.home a {
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+  background-color: #fa4529;
+  text-decoration: none;
+  transition: all 300ms;
+}
+
+.home a:hover{
+  background-color: rgb(26, 137, 26);
+}
+.page .heading,
+.home .heading {
+  font-size: 25px;
+  font-style: italic;
+  font-weight: 500;
+  color: black;
+  margin-bottom: 0;
+}
+.page .heading{
+  font-size: 55px;
+  font-weight: bold;
+}
+.home p{
+  color: rgb(98, 97, 97);
+}
+
+input [type="text"],
+textarea{
+  display: block;
+  padding: 15px;
+  width: 250px;
+  margin-top:25px;
+  width: 250px;
+
+}
+input [type="submit"],
+textarea{
+  font-size: 15px;
+  padding: 15px;
+  border: 0px;
+  border-radius: 5px;
+  color: white;
+
+  text-decoration: none;
+  transition: all 300ms;
+}
+
+.works{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.work-item{
+  flex-basis: 30%;
+  flex-grow: 1;
+  margin: 30px;
+}
+
+.work-item .mask {
+  width: 100%;
+  height: 350px;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  box-shadow: 0px 5px 15px #ddd;
+}
+
+
+.work-item img{
+  width: 120%;
+  transition: all 500ms;
+}
+
+
+.work-item span{
+  display: block;
+  color: gray;
+  margin-top: 35px;
+}
+
+.work-item h2{
+  display: block;
+  font-size: 30px;
+  color: rgb(6, 6, 6);
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.work-item a{
+  color: rgb(6, 6, 6);
+  text-decoration: none;
+  transition: all 300ms ;
+}
+
+.work-item a:hover{
+  color: #fa4529
+}
+
+
+.work-item h3{
+  display: block;
+  color: #444;
+  margin-top: 0px;
+  border-top:1px solid #ddd ;
+}
+
+.page-work .mask {
+  height: 300px;
+  overflow: hidden;
+  box-shadow: 0 0 20px #ccc;
+}
