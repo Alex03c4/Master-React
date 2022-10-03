@@ -1,30 +1,32 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { Global } from "../../helpers/Global";
+import { Peticion } from "../../helpers/Peticion";
 
 export const Articulos = () => {
   const [articulos, setArticulos] = useState([]);
-
+  const [cargando, setCargando] = useState(true);
   useEffect(() => {
     conseguirArticulos();
   }, []);
 
   const conseguirArticulos = async () => {
-    const url = "http://localhost:3900/api/articulos/";
-
-    let peticion = await fetch(url, {
-      method: "GET",
-    });
-    console.log("hola");
-    let datos = await peticion.json();
+    const { datos, cargando } = await Peticion(
+      Global.url + "articulos/",
+      "GET"
+    );
 
     if (datos.status === "success") {
       setArticulos(datos.articulos);
     }
+    setCargando(false);
   };
 
   return (
     <>
-      {articulos.length >= 1 ? (
+      {cargando ? (
+        "Cargando..."
+      ) : articulos.length >= 1 ? (
         articulos.map((articulo) => {
           return (
             <article key={articulo._id} className="articulo-item">
