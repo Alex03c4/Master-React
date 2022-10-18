@@ -5,6 +5,7 @@ import { Header } from '../components/layout/Header';
 import { Nav } from '../components/layout/Nav';
 import { Sidebar } from '../components/layout/Sidebar';
 import { Articulos } from '../components/pages/Articulos';
+import { Busqueda } from '../components/pages/Busqueda';
 import { Crear } from '../components/pages/Crear';
 import { Inicios } from '../components/pages/Inicios';
 
@@ -20,7 +21,16 @@ export const Rutas = () => {
                 <Route path='/' element={<Inicios />}/>
                 <Route path='/inicio' element={<Inicios />}/>
                 <Route path='/articulos' element={<Articulos />}/>
-                <Route path='/crear-articulos' element={<Crear />}/>                
+                <Route path='/crear-articulos' element={<Crear />}/>  
+                <Route path='/buscar/:busqueda' element={<Busqueda />}/>        
+
+
+                <Route path='*' element={
+                  <div className='jumbo'>
+                        <h1>Error 404</h1>
+                    </div>
+                }/>        
+                
             </Routes>
         </section>
         <Sidebar />
