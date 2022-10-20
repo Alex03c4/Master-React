@@ -171,10 +171,20 @@ body{
   overflow: hidden;
 }
 
+.form-group .mascara {
+  width: 150px;
+  margin: 5px;
+}
+
+.form-group .mascara img {
+  width: 150px;
+}
+
 .button,
 button,
 input[type="submit"],
-input[type="button"]{
+input[type="button"],
+.edit{
   text-decoration: none;
   width: 100px;
   background: #0b70e1;
