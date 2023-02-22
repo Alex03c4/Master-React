@@ -1,5 +1,5 @@
 import React from 'react'
-import {Routes, Route, NavLink,  BrowserRouter, Navigate} from 'react-router-dom';
+import {Routes, Route, NavLink,  BrowserRouter, Navigate, Link} from 'react-router-dom';
 import { PrivateLayout } from '../components/layout/private/PrivateLayout';
 import { PublicLayout } from '../components/layout/public/PublicLayout';
 import { Freed } from '../components/publication/Freed';
@@ -19,6 +19,16 @@ export const Routing = () => {
               <Route index element={<Freed />}/>
               <Route path='feed' element={<Freed />}/>
             </Route>
+
+            <Route path='*' element={
+              <>
+                <p>
+                  <h1>Error 404</h1>
+                  <Link to="/">Volver al inicio</Link>
+                </p>
+              </>
+            }/>
+
         </Routes>
     </BrowserRouter>
   )
