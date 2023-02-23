@@ -36,3 +36,7 @@ export const Routing = () => {
     </BrowserRouter>
   )
 }
+
+/**
+ * @param {<AuthProvider/>} Comparte la información en todo el sistemas 
+ */

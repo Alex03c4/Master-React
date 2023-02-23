@@ -2,9 +2,7 @@ import React from "react";
 import avatar from "../../assets/img/user.png";
 import useAuth from "../../hooks/useAuth";
 export const Freed = () => {
-  const { compartido } = useAuth();
-  console.log(compartido);
-
+ 
   return (
     <>
       <header className="content__header">

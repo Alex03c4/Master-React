@@ -11,6 +11,8 @@ export const Login = () => {
   const {form, changed} = useForm({})
   const [saved, setSaved] =useState("not_sended")
 
+  const {setAuth}= useAuth()
+
   const loginUser = async(e) => {
     e.preventDefault()
     //console.log(form)
@@ -37,6 +39,14 @@ export const Login = () => {
       localStorage.setItem("token", data.token)
       localStorage.setItem("user", JSON.stringify(data.user))
       setSaved("login")
+
+      // set datas en el auth
+      setAuth(data.user)
+
+      // Redirection
+      setTimeout(() => {
+        window.location.reload()
+      }, 1000);
     }else 
     setSaved("error")
     }
