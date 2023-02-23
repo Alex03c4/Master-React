@@ -5,9 +5,6 @@ import { useForm } from '../../hooks/useForm'
 
 export const Login = () => {
   
-  const {compartido} = useAuth()  
-  console.log(compartido);
-
   const {form, changed} = useForm({})
   const [saved, setSaved] =useState("not_sended")
 
@@ -45,10 +42,11 @@ export const Login = () => {
 
       // Redirection
       setTimeout(() => {
-        window.location.reload()
+      window.location.reload()       
       }, 1000);
+      
     }else 
-    setSaved("error")
+      setSaved("error")
     }
 
   return (
