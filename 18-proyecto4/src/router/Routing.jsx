@@ -3,8 +3,10 @@ import {Routes, Route, NavLink,  BrowserRouter, Navigate, Link} from 'react-rout
 import { PrivateLayout } from '../components/layout/private/PrivateLayout';
 import { PublicLayout } from '../components/layout/public/PublicLayout';
 import { Freed } from '../components/publication/Freed';
+import { Config } from '../components/user/Config';
 import { Login } from '../components/user/Login';
 import { Logout } from '../components/user/Logout';
+import { People } from '../components/user/People';
 import { Register } from '../components/user/Register';
 import { AuthProvider } from '../context/AuthProvider';
 export const Routing = () => {
@@ -22,6 +24,9 @@ export const Routing = () => {
                 <Route index element={<Freed />}/>
                 <Route path='feed' element={<Freed />}/>
                 <Route path='logout' element={<Logout />}/>
+                <Route path='gente' element={<People />}/>
+                <Route path='ajustes' element={<Config />}/>
+                
               </Route>
 
               <Route path='*' element={
