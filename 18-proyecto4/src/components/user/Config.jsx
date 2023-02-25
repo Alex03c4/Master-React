@@ -2,13 +2,42 @@ import React, { useState } from "react";
 import { Global } from "../../helpers/Global";
 import avatar from "../../assets/img/user.png";
 import useAuth from '../../hooks/useAuth'
+import { SerializeForm } from "../../helpers/SerializeForm";
 export const Config = () => {
-	const {auth} = useAuth()
+	const {auth, setAuth} = useAuth()
   const [saved, setSaved] = useState("not_saved")
 
-  const updateUser = (e)=> {
+  const updateUser = async(e)=> {
     e.preventDefault()
-		console.log(auth);
+		//console.log(auth);
+
+    // Recoger datos del formulario 
+    let newDataUser = SerializeForm(e.target)
+
+    // Borrar propiedad innecesario
+    delete newDataUser.file0
+
+    // Actualizar usuario en la Bases de Datos 
+    const request = await fetch(Global.url + "user/update", {
+      method: "PUT",
+      body: JSON.stringify(newDataUser),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": localStorage.getItem ("token")
+      }
+    })
+
+    const data = await request.json()  
+    if (data.status == "success") {
+      delete data.user.password
+      setAuth(data.user)
+      setSaved("saved")
+      
+    } else {
+      setSaved("error")
+    }
+
+
   }
   return (
     <>
@@ -20,7 +49,7 @@ export const Config = () => {
         {saved == "saved" ? (
           <strong className="alert alert-success">
             {" "}
-            "Usuario registrado correctamente !!"
+            "Usuario Actualizado correctamente !!"
           </strong>
         ) : (
           ""
@@ -29,7 +58,7 @@ export const Config = () => {
         {saved == "error" ? (
           <strong className="alert alert-danger">
             {" "}
-            "Usuario no se ha registrado !!"{" "}
+            "Usuario no se ha Actualizado !!"{" "}
           </strong>
         ) : (
           ""
@@ -76,7 +105,7 @@ export const Config = () => {
 						<input type="file" name="file0" id="file" />
         	</div> 
 					<br />     
-          <input type="submit" value="Registrate" className="btn btn-success" />
+          <input type="submit" value="Actualizado" className="btn btn-success" />
         </form>
       </div>
     </>
