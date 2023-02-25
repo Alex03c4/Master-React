@@ -457,3 +457,12 @@ button{
     border: 1px solid #8a0202;
     color: white;
 }
+.post__button--green {
+    background-color: var(--color-background-btn-success);
+    border-color: var(--color-border-btn-success);
+}
+
+.post__button--green:hover {
+    background-color: var(--color-background-btn-success-hover);
+    border-color: var(--color-border-btn-success-hover);
+}
