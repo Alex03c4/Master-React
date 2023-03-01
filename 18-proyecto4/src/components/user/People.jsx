@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from "react";
 import avatar from "../../assets/img/user.png";
 import { Global } from "../../helpers/Global";
+import useAuth from "../../hooks/useAuth";
 export const People = () => {
+
+  const {auth} = useAuth();
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
   const [more, setMore] = useState(true)
+  const [following, setFolloeing] = useState([])
+  const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
     getUsers(1);
   }, []);
   const getUsers = async (nextPage = 1) => {
+    setLoading(true);
+
     // Petición para sacar usuarios
     const request = await fetch(Global.url + "user/list/" + nextPage, {
       method: "GET",
@@ -22,6 +29,7 @@ export const People = () => {
 
     const data = await request.json();
 
+    
     // Crear un estado para poder listar
     if (data.users && data.status == "success") {
 
@@ -31,7 +39,9 @@ export const People = () => {
         newUsers = [...users, ...data.users]
       }
       setUsers(newUsers);
-      
+      setFolloeing(data.user_following)
+      setLoading(false);
+
       // paginacion
       if (users.length >= data.total - data.users.length) {
           setMore(false)
@@ -43,8 +53,51 @@ export const People = () => {
   const nextPage = () => {
     let next = page + 1;
     setPage(next);
-    getUsers(next);    
+    getUsers(next);  
+    console.log(following);  
   }
+  const follow = async(userId) => {
+    // Petición para sacar usuarios
+      const request = await fetch(Global.url + "follow/save", {
+        method: "POST",
+        body: JSON.stringify({followed: userId}),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": localStorage.getItem("token")
+        }        
+      });
+
+      const data = await request.json();
+
+    // Cuando este todo correcto 
+
+    if (data.status == "success") {
+      // Actualizar el estado de following agregado el nuevo follow
+      setFolloeing([...following, userId])
+    }
+      
+    
+  }
+  const unfollow = async(userId) => {
+        // Petición para sacar usuarios
+        const request = await fetch(Global.url + "follow/unfollow/" + userId, {
+          method: "DELETE",          
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": localStorage.getItem("token")
+          }        
+        });
+  
+        const data = await request.json();
+  
+      // Cuando este todo correcto 
+  
+      if (data.status == "success") {
+        let Eliminar  = following.filter(item => item!= userId)
+        setFolloeing(Eliminar)
+      }
+  }
+
   return (
     <>
       <header className="content__header">
@@ -52,6 +105,7 @@ export const People = () => {
       </header>
 
       <div className="content__posts">
+        
         {users.map((user) => {
           return (
             <article className="posts__post" key={user._id}>
@@ -78,20 +132,32 @@ export const People = () => {
                   <h4 className="post__content">{user.bio}</h4>
                 </div>
               </div>
-
+              {
+                user._id != auth._id && 
+              
               <div className="post__buttons">
-                <a href="#" className="post__button post__button--green">
-                  Seguir
-                </a>
+                {!following.includes(user._id) && 
+                  <button className="post__button post__button--green"
+                    onClick={() => follow(user._id)}>
+                    Seguir
+                  </button>
+                }
+                {following.includes(user._id) && 
+                  <button className="post__button "
+                    onClick={() => unfollow(user._id)}>
+                    Dejar de seguir
+                  </button>
+                }
+                
 
-                <a href="#" className="post__button ">
-                  Dejar de seguir
-                </a>
               </div>
+              }
             </article>
           );
         })}
         </div>
+
+        {loading ? <div>cargando...</div> : ""}
           {/*genera un error*/}
           {more &&         
             <div className="content__container-btn">
