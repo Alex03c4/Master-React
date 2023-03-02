@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { GetProfile } from "../../helpers/GetProfile";
 import { Global } from "../../helpers/Global";
 import { UserList } from "../user/UserList";
 
@@ -10,11 +11,13 @@ export const Followers = () => {
   const [more, setMore] = useState(true);
   const [following, setFollowing] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [userProfile, setUsersProfile] = useState({})
 
   const params = useParams()
 
   useEffect(() => {
     getUsers(1);
+    GetProfile(params.userId, setUsersProfile)
   }, []);
 
   const getUsers = async (nextPage = 1) => {
@@ -65,7 +68,7 @@ export const Followers = () => {
   return (
     <>
       <header className="content__header">
-        <h1 className="content__title">Sequidores de "Nombre de user" </h1>
+        <h1 className="content__title">Seguidores de {userProfile.name}  {userProfile.surname} </h1>
       </header>
 
       <UserList
