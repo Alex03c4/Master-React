@@ -1,5 +1,7 @@
 import React from 'react'
 import {Routes, Route, NavLink,  BrowserRouter, Navigate, Link} from 'react-router-dom';
+import { Followers } from '../components/follow/Followers';
+import { Following } from '../components/follow/Following';
 import { PrivateLayout } from '../components/layout/private/PrivateLayout';
 import { PublicLayout } from '../components/layout/public/PublicLayout';
 import { Freed } from '../components/publication/Freed';
@@ -26,6 +28,8 @@ export const Routing = () => {
                 <Route path='logout' element={<Logout />}/>
                 <Route path='gente' element={<People />}/>
                 <Route path='ajustes' element={<Config />}/>
+                <Route path='siguiendo/:userId' element={<Following />}/>
+                <Route path='seguidores/:userId' element={<Followers />}/>
                 
               </Route>
 
