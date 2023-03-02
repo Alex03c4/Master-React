@@ -9,6 +9,7 @@ import { Config } from '../components/user/Config';
 import { Login } from '../components/user/Login';
 import { Logout } from '../components/user/Logout';
 import { People } from '../components/user/People';
+import { Profile } from '../components/user/Profile';
 import { Register } from '../components/user/Register';
 import { AuthProvider } from '../context/AuthProvider';
 export const Routing = () => {
@@ -30,6 +31,7 @@ export const Routing = () => {
                 <Route path='ajustes' element={<Config />}/>
                 <Route path='siguiendo/:userId' element={<Following />}/>
                 <Route path='seguidores/:userId' element={<Followers />}/>
+                <Route path='perfil/:userId' element={<Profile />}/>
                 
               </Route>
 
