@@ -12,12 +12,16 @@ export const Profile = () => {
   const [user, setUser] = useState({})
   const [counters, setCounters] = useState({})
   const [iFollow, setIFollow] = useState(false)
+  const [publications, setPublications] = useState([])
+  const [page, setPage] = useState(1)
+  const [more, setMore] = useState(true)
   const params = useParams()
 
 
   useEffect(()=> {
     getDataUser()
     getCounters()
+    getPublications(1, true)
   }, [])
 
   useEffect(()=> {
@@ -25,6 +29,8 @@ export const Profile = () => {
     //getCounters()
     getDataUser()
     getCounters()
+    setMore(true)
+    getPublications(1, true)
   }, [params])
 
   const getDataUser = async() => {
@@ -88,7 +94,45 @@ export const Profile = () => {
     if (data.status == "success") {
       setIFollow(false)
     }
-  };
+  }
+
+  const getPublications = async (nextPage = 1, newProfile = false ) => {
+    const request = await fetch(Global.url + "publication/user/" + params.userId + "/" + nextPage, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+    })
+
+    const data = await request.json()
+    
+    if (data.status == "success") {
+      let newPublications = data.publications
+      if (!newProfile && publications.length >= 1) {
+         newPublications = [...publications, ...data.publications] 
+      }
+
+      if(newProfile){
+        newPublications = data.publications
+        setMore(true)
+        setPage(1)
+      }
+
+      setPublications(newPublications)
+      
+      if (!newProfile &&  publications.length >= (data.total - data.publications.length)) {
+        setMore(false)
+      }
+    }
+
+  }
+
+  const nextPage =  () => {
+    let next = page + 1
+    setPage(next)
+    getPublications(next)
+  }
 
   return (
     <>
@@ -115,7 +159,7 @@ export const Profile = () => {
           <div className="general-info__container-names">
             <div className="container-names__name">
               <h1>{user.name} {user.surname}</h1>              
-             { console.log(iFollow)}
+            
               {user._id != auth._id &&
               
                   (iFollow? 
@@ -155,40 +199,58 @@ export const Profile = () => {
       </header>
 
       <div className="content__posts">
-        <article className="posts__post">
-          <div className="post__container">
-            <div className="post__image-user">
-              <a href="#" className="post__image-link">
-                <img
-                  src={avatar}
-                  className="post__user-image"
-                  alt="Foto de perfil"
-                />
-              </a>
-            </div>
+        {publications.map(publication => {
+         
+          return(
+            <article className="posts__post" key={publication._id}>
+              <div className="post__container">
+                <div className="post__image-user">
+                  <a href="#" className="post__image-link">
+                    {publication.user.image != "default.png" && (
+                      <img src={Global.url + "user/avatar/" + publication.user.image} className="post__user-image" alt="Foto de perfil"
+                      />
+                    )}
+                    {publication.user.image == "default.png" && (
+                      <img src={avatar} className="post__user-image" alt="Foto de perfil"
+                      />
+                    )}
+                  </a>
+                </div>
 
-            <div className="post__body">
-              <div className="post__user-info">
-                <a href="#" className="user-info__name">
-                  Victor Robles
-                </a>
-                <span className="user-info__divider"> | </span>
-                <a href="#" className="user-info__create-date">
-                  Hace 1 hora
-                </a>
+                <div className="post__body">
+                  <div className="post__user-info">
+                    <a href="#" className="user-info__name">
+                      {publication.user.name} {publication.user.surname}
+                    </a>
+                    <span className="user-info__divider"> | </span>
+                    <a href="#" className="user-info__create-date">
+                      {publication.created_at}
+                    </a>
+                  </div>
+
+                  <h4 className="post__content">{publication.text}</h4>
+                </div>
               </div>
 
-              <h4 className="post__content">Hola, buenos dias.</h4>
-            </div>
-          </div>
-
-          <div className="post__buttons">
-            <a href="#" className="post__button">
-              <i className="fa-solid fa-trash-can"></i>
-            </a>
-          </div>
-        </article>
+              {auth._id == publication.user._id && 
+                <div className="post__buttons">
+                  <a href="#" className="post__button">
+                    <i className="fa-solid fa-trash-can"></i>
+                  </a>
+                </div>
+              }
+            </article>
+          )
+        })}
       </div>
+        {more &&
+          <div className="content__container-btn">
+            <button className="content__btn-more-post" onClick={nextPage}>
+              Ver mas publicaciones!
+            </button>
+          </div>
+        }
+        <br />
     </>
   );
 };
