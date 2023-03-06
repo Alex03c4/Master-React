@@ -1,8 +1,56 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import avatar from "../../assets/img/user.png";
+
+import {useParams} from "react-router-dom";
+import { Global } from "../../helpers/Global";
+import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import { PublicationList } from "../publication/PublicationList";
+
 export const Freed = () => {
- 
+
+  const {auth} = useAuth()
+  const [publications, setPublications] = useState([])
+  const [page, setPage] = useState(1)
+  const [more, setMore] = useState(true)
+  const params = useParams()
+  
+  useEffect(()=> {    
+    getPublications(1, true)
+  }, [])
+
+
+  const getPublications = async (nextPage = 1 ) => {
+    const request = await fetch(Global.url + "publication/feed/" + nextPage, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+    })
+
+    const data = await request.json()
+    
+    if (data.status == "success") {
+      let newPublications = data.publications
+      if ( publications.length >= 1) {
+         newPublications = [...publications, ...data.publications] 
+      }
+
+       
+      setPublications(newPublications)
+      
+      if (publications.length >= (data.total - data.publications.length)) {
+        setMore(false)
+      }
+
+      if (data.pages <= 1) {
+        setMore(false)
+      }
+    }
+
+  }
+
   return (
     <>
       <header className="content__header">
@@ -10,143 +58,14 @@ export const Freed = () => {
         <button className="content__button">Mostrar nuevas</button>
       </header>
 
-      <div className="content__posts">
-        <div className="posts__post">
-          <div className="post__container">
-            <div className="post__image-user">
-              <a href="#" className="post__image-link">
-                <img
-                  src={avatar}
-                  className="post__user-image"
-                  alt="Foto de perfil"
-                />
-              </a>
-            </div>
-
-            <div className="post__body">
-              <div className="post__user-info">
-                <a href="#" className="user-info__name">
-                  Victor Robles
-                </a>
-                <span className="user-info__divider"> | </span>
-                <a href="#" className="user-info__create-date">
-                  Hace 1 hora
-                </a>
-              </div>
-
-              <h4 className="post__content">Hola, buenos dias.</h4>
-            </div>
-          </div>
-
-          <div className="post__buttons">
-            <a href="#" className="post__button">
-              <i className="fa-solid fa-trash-can"></i>
-            </a>
-          </div>
-        </div>
-
-        <div className="posts__post">
-          <div className="post__container">
-            <div className="post__image-user">
-              <a href="#" className="post__image-link">
-                <img
-                  src={avatar}
-                  className="post__user-image"
-                  alt="Foto de perfil"
-                />
-              </a>
-            </div>
-
-            <div className="post__body">
-              <div className="post__user-info">
-                <a href="#" className="user-info__name">
-                  Victor Robles
-                </a>
-                <span className="user-info__divider"> | </span>
-                <a href="#" className="user-info__create-date">
-                  Hace 1 hora
-                </a>
-              </div>
-
-              <h4 className="post__content">Hola, buenos dias.</h4>
-            </div>
-          </div>
-
-          <div className="post__buttons">
-            <a href="#" className="post__button">
-              <i className="fa-solid fa-trash-can"></i>
-            </a>
-          </div>
-        </div>
-
-        <div className="posts__post">
-          <div className="post__container">
-            <div className="post__image-user">
-              <a href="#" className="post__image-link">
-                <img
-                  src={avatar}
-                  className="post__user-image"
-                  alt="Foto de perfil"
-                />
-              </a>
-            </div>
-
-            <div className="post__body">
-              <div className="post__user-info">
-                <a href="#" className="user-info__name">
-                  Victor Robles
-                </a>
-                <span className="user-info__divider"> | </span>
-                <a href="#" className="user-info__create-date">
-                  Hace 1 hora
-                </a>
-              </div>
-
-              <h4 className="post__content">Hola, buenos dias.</h4>
-            </div>
-          </div>
-
-          <div className="post__buttons">
-            <a href="#" className="post__button">
-              <i className="fa-solid fa-trash-can"></i>
-            </a>
-          </div>
-        </div>
-
-        <div className="posts__post">
-          <div className="post__container">
-            <div className="post__image-user">
-              <a href="#" className="post__image-link">
-                <img
-                  src={avatar}
-                  className="post__user-image"
-                  alt="Foto de perfil"
-                />
-              </a>
-            </div>
-
-            <div className="post__body">
-              <div className="post__user-info">
-                <a href="#" className="user-info__name">
-                  Victor Robles
-                </a>
-                <span className="user-info__divider"> | </span>
-                <a href="#" className="user-info__create-date">
-                  Hace 1 hora
-                </a>
-              </div>
-
-              <h4 className="post__content">Hola, buenos dias.</h4>
-            </div>
-          </div>
-
-          <div className="post__buttons">
-            <a href="#" className="post__button">
-              <i className="fa-solid fa-trash-can"></i>
-            </a>
-          </div>
-        </div>
-      </div>
+      <PublicationList
+        publications={publications}
+        getPublications={getPublications}
+        page={page}
+        setPage={setPage}
+        more={more}
+        setMore={setMore}
+      />
     </>
   );
 };
