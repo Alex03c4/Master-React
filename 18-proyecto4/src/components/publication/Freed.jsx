@@ -16,11 +16,19 @@ export const Freed = () => {
   const params = useParams()
   
   useEffect(()=> {    
-    getPublications(1, true)
+    getPublications(1, false)
   }, [])
 
 
-  const getPublications = async (nextPage = 1 ) => {
+  const getPublications = async (nextPage = 1, showNews =false) => {
+   
+   if (showNews)  {
+    setPublications([])
+    setPage(1)
+    nextPage = 1
+   }
+   
+   
     const request = await fetch(Global.url + "publication/feed/" + nextPage, {
       method: "GET",
       headers: {
@@ -33,14 +41,14 @@ export const Freed = () => {
     
     if (data.status == "success") {
       let newPublications = data.publications
-      if ( publications.length >= 1) {
+      if (!showNews && publications.length >= 1) {
          newPublications = [...publications, ...data.publications] 
       }
 
        
       setPublications(newPublications)
       
-      if (publications.length >= (data.total - data.publications.length)) {
+      if (!showNews && publications.length >= (data.total - data.publications.length)) {
         setMore(false)
       }
 
@@ -55,7 +63,7 @@ export const Freed = () => {
     <>
       <header className="content__header">
         <h1 className="content__title">Timeline</h1>
-        <button className="content__button">Mostrar nuevas</button>
+        <button className="content__button" onClick={()=> getPublications(1,true)}>Mostrar nuevas</button>
       </header>
 
       <PublicationList

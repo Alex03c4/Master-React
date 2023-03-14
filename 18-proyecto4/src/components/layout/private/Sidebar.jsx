@@ -60,14 +60,14 @@ export const Sidebar = () => {
         setStored("error");
       }
 
-      // Limpiar formulario 
-    if (data.status == "success" && uploadData.status == "success") {
+    
+    }
+  // Limpiar formulario 
+    //if (data.status == "success" && uploadData.status == "success") {
       const myForm = document.querySelector("#publication-form");
       myForm.reset()
 
-    }
-    }
-
+    //}
     
 
 

@@ -3,6 +3,7 @@ import { Global } from "../../helpers/Global";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import avatar from "../../assets/img/user.png";
+import ReactTimeAgo from "react-time-ago"
 export const PublicationList = ({
         publications,
         getPublications,
@@ -74,7 +75,8 @@ export const PublicationList = ({
                     </a>
                     <span className="user-info__divider"> | </span>
                     <a href="#" className="user-info__create-date">
-                      {publication.created_at}
+                     <ReactTimeAgo date={publication.created_at} locale="es-ES" />
+                    
                     </a>
                   </div>
 
